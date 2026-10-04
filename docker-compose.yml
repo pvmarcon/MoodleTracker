@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: moodle_postgres
+    environment:
+      POSTGRES_DB: moodle_tracker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: moodle_rabbitmq
+    ports:
+      - "5672:5672" # Porta AMQP
+      - "15672:15672" # Painel Web
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+volumes:
+  pgdata:
