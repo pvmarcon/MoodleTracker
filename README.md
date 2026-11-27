@@ -6,7 +6,7 @@ Inspiração visual: a clareza do **Linear** e a gamificação do **Duolingo**.
 ## Rodando
 
 ```bash
-cd frontend
+
 npm install
 npm run dev        # http://localhost:5173  (abra no celular pela mesma rede: --host já habilitado)
 npm test           # testes da lógica de domínio (Vitest)
@@ -51,5 +51,5 @@ src/
 ```
 
 ### Caminhos de migração
-- **Backend**: implemente `AppRepository` com chamadas HTTP (`GET/PUT/DELETE /roadmaps/:id`, `GET/PUT /me/profile`) ou Supabase e troque a instância em `services/repository.ts`. O backend Spring deste repositório é um candidato natural.
+- **Backend**: implemente `AppRepository` com chamadas HTTP (`GET/PUT/DELETE /roadmaps/:id`, `GET/PUT /me/profile`) ou Supabase e troque a instância em `services/repository.ts`.
 - **React Native/Expo**: `types/`, `domain/`, `services/ai` e `services/repository.ts` são TypeScript puro e podem ser reaproveitados; troque o `KeyValueStore` por AsyncStorage e o `navigation.tsx` por React Navigation (bottom tabs + native stack). Apenas os componentes de UI precisam ser reescritos.
