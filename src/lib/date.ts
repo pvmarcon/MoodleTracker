@@ -54,3 +54,12 @@ export const formatMinutes = (m: number): string => {
   const r = m % 60;
   return r ? `${h}h${pad(r)}` : `${h}h`;
 };
+
+/** Countdown label for deadlines: "em 120 dias", "amanhã", "vencido há 3 dias". */
+export const countdown = (s: ISODate, ref: ISODate = today()): string => {
+  const n = diffDays(ref, s);
+  if (n === 0) return 'hoje';
+  if (n === 1) return 'amanhã';
+  if (n < 0) return `vencido há ${-n} ${-n === 1 ? 'dia' : 'dias'}`;
+  return `em ${n} dias`;
+};

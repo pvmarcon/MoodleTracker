@@ -11,6 +11,13 @@ import { SuggestionsScreen } from '@/features/suggestions/SuggestionsScreen';
 import { TodayScreen } from '@/features/today/TodayScreen';
 import { AppStoreProvider, useApp } from '@/store/AppStore';
 import { NavigationProvider, useNav } from '@/store/navigation';
+import { repository } from '@/services/repository';
+import type { ThemePref } from '@/types';
+
+const applyTheme = (theme: ThemePref) => {
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0b0b0f' : '#fafafa');
+};
 
 function CurrentScreen() {
   const { tab, stack } = useNav();
@@ -90,7 +97,7 @@ function Shell() {
 export default function App() {
   return (
     <ToastProvider>
-      <AppStoreProvider>
+      <AppStoreProvider repository={repository} onThemeChange={applyTheme}>
         <NavigationProvider>
           <Shell />
         </NavigationProvider>

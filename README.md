@@ -1,5 +1,7 @@
 # Trilha — Tarefas & Roadmaps com IA
 
+> 📱 **App mobile (Expo / React Native):** veja [`mobile/README.md`](mobile/README.md) para testar no celular com o Expo Go.
+
 App web mobile-first (PWA) para tarefas diárias e roadmaps de estudo/carreira guiados por objetivos.
 Inspiração visual: a clareza do **Linear** e a gamificação do **Duolingo**.
 
@@ -51,4 +53,4 @@ src/
 
 ### Caminhos de migração
 - **Backend**: implemente `AppRepository` com chamadas HTTP (`GET/PUT/DELETE /roadmaps/:id`, `GET/PUT /me/profile`) ou Supabase e troque a instância em `services/repository.ts`.
-- **React Native/Expo**: `types/`, `domain/`, `services/ai` e `services/repository.ts` são TypeScript puro e podem ser reaproveitados; troque o `KeyValueStore` por AsyncStorage e o `navigation.tsx` por React Navigation (bottom tabs + native stack). Apenas os componentes de UI precisam ser reescritos.
+- **React Native/Expo**: já existe em [`mobile/`](mobile/). Ele importa `types/`, `domain/`, `services/` e `store/AppStore.tsx` diretamente daqui (via `@/…`), injeta AsyncStorage no `AppRepository` e tem só as telas reescritas em componentes nativos. Mudanças na lógica aqui valem para os dois apps.

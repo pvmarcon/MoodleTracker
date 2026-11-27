@@ -5,28 +5,31 @@ import type { AIProvider, GeneratedIdea, GeneratedRoadmap, SuggestContext } from
 
 export type { AIProvider, GeneratedIdea, GeneratedRoadmap } from './types';
 
-const env = import.meta.env;
+import { getAIEnv } from './env';
+
+export { setAIEnv } from './env';
 
 /**
  * Resolution order:
  *  1. Settings chosen in the app (Perfil > IA), including an on-device key
- *  2. VITE_AI_PROVIDER + VITE_*_API_KEY
- *  3. VITE_AI_PROXY_URL
+ *  2. Platform env (VITE_* on web, EXPO_PUBLIC_* on mobile) via setAIEnv
+ *  3. Proxy URL
  *  4. Mock Inteligente
  */
 export const resolveProvider = (settings?: AISettings): AIProvider => {
-  const provider = settings?.provider && settings.provider !== 'mock' ? settings.provider : (env.VITE_AI_PROVIDER as AISettings['provider']);
-  const proxy = env.VITE_AI_PROXY_URL as string | undefined;
+  const env = getAIEnv();
+  const provider = settings?.provider && settings.provider !== 'mock' ? settings.provider : env.provider;
+  const proxy = env.proxyUrl;
 
   if (provider === 'openai') {
-    const key = settings?.apiKey || env.VITE_OPENAI_API_KEY;
-    const model = settings?.model || env.VITE_OPENAI_MODEL;
+    const key = settings?.apiKey || env.openaiKey;
+    const model = settings?.model || env.openaiModel;
     if (key) return createOpenAIProvider(key, model || undefined);
     if (proxy) return createProxyProvider(proxy, 'openai');
   }
   if (provider === 'gemini') {
-    const key = settings?.apiKey || env.VITE_GEMINI_API_KEY;
-    const model = settings?.model || env.VITE_GEMINI_MODEL;
+    const key = settings?.apiKey || env.geminiKey;
+    const model = settings?.model || env.geminiModel;
     if (key) return createGeminiProvider(key, model || undefined);
     if (proxy) return createProxyProvider(proxy, 'gemini');
   }

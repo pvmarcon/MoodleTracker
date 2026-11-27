@@ -8,7 +8,7 @@ import { computeStats, type Stats } from '@/domain/stats';
 import { uid } from '@/lib/id';
 import { today } from '@/lib/date';
 import { aiService } from '@/services/ai';
-import { repository } from '@/services/repository';
+import type { AppRepository } from '@/services/repository';
 import type { ISODate, Profile, Roadmap, RoadmapInput, Suggestion } from '@/types';
 
 interface State {
@@ -44,12 +44,22 @@ interface AppStore extends State {
 
 const Ctx = createContext<AppStore | null>(null);
 
-const applyTheme = (theme: Profile['theme']) => {
-  document.documentElement.classList.toggle('dark', theme === 'dark');
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0b0b0f' : '#fafafa');
-};
-
-export function AppStoreProvider({ children }: { children: ReactNode }) {
+/**
+ * Platform-agnostic store shared by web and mobile. Each platform injects its
+ * persistence (LocalStorage / AsyncStorage) and how to apply the theme.
+ */
+export function AppStoreProvider({
+  children,
+  repository,
+  onThemeChange,
+}: {
+  children: ReactNode;
+  repository: AppRepository;
+  onThemeChange?: (theme: Profile['theme']) => void;
+}) {
+  const themeRef = useRef(onThemeChange);
+  themeRef.current = onThemeChange;
+  const applyTheme = (theme: Profile['theme']) => themeRef.current?.(theme);
   const [state, setState] = useState<State>({ ready: false, roadmaps: [], profile: defaultProfile(), dismissed: [] });
   const stateRef = useRef(state);
   stateRef.current = state;

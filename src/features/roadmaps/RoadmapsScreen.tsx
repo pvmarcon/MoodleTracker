@@ -6,7 +6,7 @@ import { Pill } from '@/components/ui/Chip';
 import { ProgressBar } from '@/components/ui/Progress';
 import { currentPhaseIndex, progressOf, roadmapTasks } from '@/domain/roadmap';
 import { ROADMAP_HEX } from '@/lib/colors';
-import { formatShort, relativeDay, today } from '@/lib/date';
+import { countdown, formatShort, today } from '@/lib/date';
 import { useApp } from '@/store/AppStore';
 import { useNav } from '@/store/navigation';
 import type { Roadmap } from '@/types';
@@ -106,7 +106,7 @@ function RoadmapCard({ roadmap: r, onOpen, index }: { roadmap: Roadmap; onOpen: 
           {prog.done}/{prog.total} tarefas
         </span>
         <span className="inline-flex items-center gap-1">
-          <CalendarDays size={12} /> {formatShort(r.deadline)} ({relativeDay(r.deadline)})
+          <CalendarDays size={12} /> {formatShort(r.deadline)} · {countdown(r.deadline)}
         </span>
         {overdue > 0 && <span className="font-medium text-danger">{overdue} atrasadas</span>}
       </div>
