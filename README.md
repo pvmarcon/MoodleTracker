@@ -6,7 +6,6 @@ Inspiração visual: a clareza do **Linear** e a gamificação do **Duolingo**.
 ## Rodando
 
 ```bash
-
 npm install
 npm run dev        # http://localhost:5173  (abra no celular pela mesma rede: --host já habilitado)
 npm test           # testes da lógica de domínio (Vitest)
