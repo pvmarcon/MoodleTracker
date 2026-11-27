@@ -1,6 +1,8 @@
 # Trilha — Tarefas & Roadmaps com IA
 
 > 📱 **App mobile (Expo / React Native):** veja [`mobile/README.md`](mobile/README.md) para testar no celular com o Expo Go.
+>
+> 🤖 **Agente de carreira (UI estilo apps de IA):** veja [`agent/README.md`](agent/README.md).
 
 App web mobile-first (PWA) para tarefas diárias e roadmaps de estudo/carreira guiados por objetivos.
 Inspiração visual: a clareza do **Linear** e a gamificação do **Duolingo**.
