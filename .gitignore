@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+
+# Config local
+.env
+
+# Dados gerados localmente (inbox de teste e Second Brain).
+# Se quiser versionar o Second Brain, use um repositório Git separado apontado por MT_BRAIN_DIR.
+data/
+
+.DS_Store

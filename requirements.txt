@@ -1,0 +1,16 @@
+# Gerado a partir de pyproject.toml (dependências de runtime). Dev: pip install -e ".[dev]"
+pydantic>=2.9
+pydantic-settings>=2.6
+sqlalchemy>=2.1
+psycopg[binary]>=3.2
+pgvector>=0.3.6
+pymupdf>=1.25
+python-pptx>=1.0
+beautifulsoup4>=4.12
+pyyaml>=6.0.2
+apscheduler>=3.10,<4
+fastapi>=0.115
+uvicorn[standard]>=0.32
+structlog>=24.4
+httpx>=0.28
+typer>=0.15

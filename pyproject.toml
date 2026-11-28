@@ -1,0 +1,78 @@
+[project]
+name = "moodletracker"
+version = "0.1.0"
+description = "Pipeline que monitora materiais do Moodle, gera um Second Brain em Markdown e indexa em RAG (PostgreSQL + pgvector)."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "pydantic>=2.9",
+  "pydantic-settings>=2.6",
+  "sqlalchemy>=2.1",
+  "psycopg[binary]>=3.2",
+  "pgvector>=0.3.6",
+  "pymupdf>=1.25",
+  "python-pptx>=1.0",
+  "beautifulsoup4>=4.12",
+  "pyyaml>=6.0.2",
+  "apscheduler>=3.10,<4",
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.32",
+  "structlog>=24.4",
+  "httpx>=0.28",
+  "typer>=0.15",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3",
+  "ruff>=0.8",
+  "mypy>=1.13",
+  "types-PyYAML>=6.0",
+]
+
+[project.scripts]
+moodletracker = "moodletracker.cli:app"
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/moodletracker"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["db: requer PostgreSQL + pgvector (MT_TEST_DATABASE_URL)"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "N", "PL"]
+ignore = ["PLR0913", "PLR0917", "PLR2004", "PLR0911", "PLR0912", "PLR0915", "RUF001", "RUF002", "RUF003"]
+
+[tool.ruff.lint.per-file-ignores]
+# Imports tardios intencionais: startup rápido da CLI e fábricas que evitam import circular.
+"src/moodletracker/cli.py" = ["PLC0415"]
+"src/moodletracker/parsers/base.py" = ["PLC0415"]
+"src/moodletracker/collectors/base.py" = ["PLC0415"]
+"tests/**" = ["PLR2004", "S101"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+mypy_path = "src"
+
+[[tool.mypy.overrides]]
+module = ["pptx.*", "pgvector.*", "apscheduler.*"]
+ignore_missing_imports = true
+
+# PyMuPDF expõe tipos parciais (muitas funções sem anotação): tratado como não tipado.
+[[tool.mypy.overrides]]
+module = ["pymupdf", "pymupdf.*"]
+follow_imports = "skip"
+ignore_missing_imports = true

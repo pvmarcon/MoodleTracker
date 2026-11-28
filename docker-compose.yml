@@ -1,0 +1,33 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: moodletracker-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: moodletracker
+      POSTGRES_USER: moodletracker
+      POSTGRES_PASSWORD: moodletracker
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql/00-extensions.sql:/docker-entrypoint-initdb.d/00-extensions.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U moodletracker -d moodletracker"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # Opcional: embeddings locais (docker compose --profile ollama up -d; depois: docker exec moodletracker-ollama ollama pull nomic-embed-text)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: moodletracker-ollama
+    profiles: ["ollama"]
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+
+volumes:
+  pgdata:
+  ollama:
